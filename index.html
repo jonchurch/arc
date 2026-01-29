@@ -360,7 +360,7 @@
     </div>
     <div class="modal-map-label" id="modal-map-label"></div>
     <div class="modal-map" id="modal-map">
-      <img src="https://i.redd.it/55jwtfzo9m3g1.jpeg" alt="ARC Raiders Map" />
+      <img id="modal-map-img" src="" alt="Map" />
       <div class="map-pin-pulse" id="pin-pulse"></div>
       <div class="map-pin-dot" id="pin-dot"></div>
     </div>
@@ -372,45 +372,84 @@
 
 <script>
   // ===========================================
-  // KEY DATA - Edit this to add/modify keys
-  // mapX/mapY are percentage positions on the map image (0-100).
-  // Adjust these values to fine-tune pin placement.
+  // PER-MAP IMAGES
+  // Each map region gets its own image. mapX/mapY on keys
+  // are percentage positions within that map's image.
+  // ===========================================
+  const MAP_IMAGES = {
+    "Blue Gate":    "https://i.redd.it/55jwtfzo9m3g1.jpeg",
+    "Buried City":  "https://i.redd.it/55jwtfzo9m3g1.jpeg",
+    "Dam":          "https://i.redd.it/55jwtfzo9m3g1.jpeg",
+    "Spaceport":    "https://i.redd.it/55jwtfzo9m3g1.jpeg",
+    "Stella Montis":"https://i.redd.it/55jwtfzo9m3g1.jpeg",
+  };
+
+  // ===========================================
+  // KEY DATA
+  // mapX/mapY are percentage positions (0-100) within the
+  // map region image. Based on reference screenshots:
+  //   Blue Gate: map area is left ~65% of image
+  //   Buried City: map area is left ~65% of image
+  //   Dam: map area is left ~60% of image
+  //   Spaceport: map area fills ~85% width
+  //   Stella Montis: map area is right ~65% of image
   // ===========================================
   const KEYS_DATA = [
-    // S+ Tier
-    { name: "Dam Staff Room Key", tier: "S+", map: "Dam", video: "https://www.youtube.com/watch?v=Zl-tlFGe0Ig", mapX: 72, mapY: 28 },
+    // S+ Tier — Dam
+    // Staff Room: near Research & Administration, center of Dam map
+    { name: "Dam Staff Room Key", tier: "S+", map: "Dam", video: "https://www.youtube.com/watch?v=Zl-tlFGe0Ig", mapX: 42, mapY: 55 },
 
-    // S Tier
-    { name: "Buried City Town Hall Key", tier: "S", map: "Buried City", video: "https://www.youtube.com/watch?v=7PYEOWd-CWg", mapX: 35, mapY: 55 },
+    // S Tier — Buried City
+    // Town Hall: center-south, near "Town Hall" label
+    { name: "Buried City Town Hall Key", tier: "S", map: "Buried City", video: "https://www.youtube.com/watch?v=7PYEOWd-CWg", mapX: 52, mapY: 60 },
 
     // A Tier
-    { name: "Buried City Residential Master Key", tier: "A", map: "Buried City", video: "https://www.youtube.com/watch?v=UCMB4lHow3A", mapX: 33, mapY: 52 },
-    { name: "Dam Control Tower Key", tier: "A", map: "Dam", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=348s", mapX: 74, mapY: 25 },
-    { name: "Dam Water Treatment Surveillance Key", tier: "A", map: "Dam", video: "https://www.youtube.com/watch?v=4PKZtqDkcVI", mapX: 70, mapY: 30 },
-    { name: "Spaceport Trench Tower Key", tier: "A", map: "Spaceport", video: "https://www.youtube.com/watch?v=7wCxlXmiNkA", mapX: 55, mapY: 18 },
-    { name: "Spaceport Warehouse Key", tier: "A", map: "Spaceport", video: "https://www.youtube.com/watch?v=4b6g27x3AK4", mapX: 58, mapY: 15 },
+    // Residential Master: lower-left, near Grandioso Apartments
+    { name: "Buried City Residential Master Key", tier: "A", map: "Buried City", video: "https://www.youtube.com/watch?v=UCMB4lHow3A", mapX: 28, mapY: 72 },
+    // Control Tower: near Primary Facility, center of Dam map
+    { name: "Dam Control Tower Key", tier: "A", map: "Dam", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=348s", mapX: 40, mapY: 48 },
+    // Water Treatment Surveillance: left-center near Water Treatment
+    { name: "Dam Water Treatment Surveillance Key", tier: "A", map: "Dam", video: "https://www.youtube.com/watch?v=4PKZtqDkcVI", mapX: 28, mapY: 46 },
+    // Trench Tower: upper area near South Trench Tower / The Trench
+    { name: "Spaceport Trench Tower Key", tier: "A", map: "Spaceport", video: "https://www.youtube.com/watch?v=7wCxlXmiNkA", mapX: 48, mapY: 22 },
+    // Warehouse: near Container Storage area, center
+    { name: "Spaceport Warehouse Key", tier: "A", map: "Spaceport", video: "https://www.youtube.com/watch?v=4b6g27x3AK4", mapX: 53, mapY: 45 },
 
     // B Tier
-    { name: "Blue Gate Cellar Key", tier: "B", map: "Blue Gate", video: "https://www.youtube.com/watch?v=1mODwf3770E", mapX: 20, mapY: 35 },
-    { name: "Stella Montis Archives Key", tier: "B", map: "Stella Montis", video: "https://www.youtube.com/watch?v=yqE47MrtgIs", mapX: 48, mapY: 72 },
-    { name: "Stella Montis Security Checkpoint Key", tier: "B", map: "Stella Montis", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=611s", mapX: 50, mapY: 75 },
-    { name: "Spaceport Control Tower Key", tier: "B", map: "Spaceport", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=636s", mapX: 53, mapY: 20 },
+    // Cellar: left side near Trapper's Glade / Adorned Wreckage
+    { name: "Blue Gate Cellar Key", tier: "B", map: "Blue Gate", video: "https://www.youtube.com/watch?v=1mODwf3770E", mapX: 18, mapY: 40 },
+    // Archives: top-right near Assembly Workshops
+    { name: "Stella Montis Archives Key", tier: "B", map: "Stella Montis", video: "https://www.youtube.com/watch?v=yqE47MrtgIs", mapX: 82, mapY: 14 },
+    // Security Checkpoint: far right near Storage Room
+    { name: "Stella Montis Security Checkpoint Key", tier: "B", map: "Stella Montis", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=611s", mapX: 95, mapY: 40 },
+    // Spaceport Control Tower: near Control Tower A6, center-left
+    { name: "Spaceport Control Tower Key", tier: "B", map: "Spaceport", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=636s", mapX: 42, mapY: 47 },
 
     // C Tier
-    { name: "Blue Gate Communication Tower Key", tier: "C", map: "Blue Gate", video: "https://www.youtube.com/watch?v=_Lhg_9S7-9c", mapX: 22, mapY: 38 },
-    { name: "Blue Gate Village Key", tier: "C", map: "Blue Gate", video: "https://www.youtube.com/watch?v=52sE7WHqq8E", mapX: 18, mapY: 32 },
-    { name: "Blue Gate Confiscation Room Key", tier: "C", map: "Blue Gate", video: "https://www.youtube.com/watch?v=4UOxuz8mElQ", mapX: 24, mapY: 36 },
-    { name: "Dam Testing Annex Key", tier: "C", map: "Dam", video: "https://www.youtube.com/watch?v=A-5FQknNE2g", mapX: 68, mapY: 32 },
-    { name: "Spaceport Container Storage Key", tier: "C", map: "Spaceport", video: "https://www.youtube.com/watch?v=NJ3wh8UnIW0", mapX: 56, mapY: 22 },
-    { name: "Stella Montis Medical Storage Key", tier: "C", map: "Stella Montis", video: "https://www.youtube.com/watch?v=aHUarKktrxU", mapX: 46, mapY: 70 },
-    { name: "Buried City JKV Employee Key", tier: "C", map: "Buried City", video: "https://www.youtube.com/watch?v=6Rbtm-wq_ZQ", mapX: 37, mapY: 58 },
+    // Communication Tower: center-upper near Headhouse
+    { name: "Blue Gate Communication Tower Key", tier: "C", map: "Blue Gate", video: "https://www.youtube.com/watch?v=_Lhg_9S7-9c", mapX: 46, mapY: 28 },
+    // Village: top-left near Village label
+    { name: "Blue Gate Village Key", tier: "C", map: "Blue Gate", video: "https://www.youtube.com/watch?v=52sE7WHqq8E", mapX: 28, mapY: 14 },
+    // Confiscation Room: top-right near Data Vault
+    { name: "Blue Gate Confiscation Room Key", tier: "C", map: "Blue Gate", video: "https://www.youtube.com/watch?v=4UOxuz8mElQ", mapX: 68, mapY: 16 },
+    // Testing Annex: lower-center near Annex label
+    { name: "Dam Testing Annex Key", tier: "C", map: "Dam", video: "https://www.youtube.com/watch?v=A-5FQknNE2g", mapX: 48, mapY: 62 },
+    // Container Storage: center area
+    { name: "Spaceport Container Storage Key", tier: "C", map: "Spaceport", video: "https://www.youtube.com/watch?v=NJ3wh8UnIW0", mapX: 50, mapY: 47 },
+    // Medical Storage: lower-left area
+    { name: "Stella Montis Medical Storage Key", tier: "C", map: "Stella Montis", video: "https://www.youtube.com/watch?v=aHUarKktrxU", mapX: 48, mapY: 55 },
+    // JKV Employee: upper-center near Library
+    { name: "Buried City JKV Employee Key", tier: "C", map: "Buried City", video: "https://www.youtube.com/watch?v=6Rbtm-wq_ZQ", mapX: 48, mapY: 30 },
 
     // D Tier
-    { name: "Buried City Hospital Key", tier: "D", map: "Buried City", video: "https://www.youtube.com/watch?v=FzQz1NBZN0U", mapX: 31, mapY: 50 },
-    { name: "Stella Montis Assembly Admin Key", tier: "D", map: "Stella Montis", video: "https://www.youtube.com/watch?v=f8XjNTZjjbo", mapX: 52, mapY: 68 },
+    // Hospital: center near Research area
+    { name: "Buried City Hospital Key", tier: "D", map: "Buried City", video: "https://www.youtube.com/watch?v=FzQz1NBZN0U", mapX: 55, mapY: 44 },
+    // Assembly Admin: center near Assembly
+    { name: "Stella Montis Assembly Admin Key", tier: "D", map: "Stella Montis", video: "https://www.youtube.com/watch?v=f8XjNTZjjbo", mapX: 62, mapY: 42 },
 
     // F Tier
-    { name: "Blue Gate Patrol Car Key", tier: "F", map: "Blue Gate", video: "https://www.youtube.com/watch?v=XMzIV7EFqGQ", mapX: 16, mapY: 40 },
+    // Patrol Car: not shown in reference, estimated near south Blue Gate
+    { name: "Blue Gate Patrol Car Key", tier: "F", map: "Blue Gate", video: "https://www.youtube.com/watch?v=XMzIV7EFqGQ", mapX: 40, mapY: 70 },
   ];
 
   const TIERS = [
@@ -440,6 +479,7 @@
     const modalBadge = document.getElementById('modal-badge');
     const modalMapLabel = document.getElementById('modal-map-label');
     const modalVideo = document.getElementById('modal-video');
+    const modalMapImg = document.getElementById('modal-map-img');
     const pinDot = document.getElementById('pin-dot');
     const pinPulse = document.getElementById('pin-pulse');
 
@@ -450,8 +490,11 @@
       modalName.textContent = keyData.name;
       modalBadge.textContent = keyData.tier;
       modalBadge.className = 'tier-badge ' + TIER_CSS[keyData.tier];
-      modalMapLabel.textContent = keyData.map + ' region';
+      modalMapLabel.textContent = keyData.map;
       modalVideo.href = keyData.video;
+
+      // Set per-map image
+      modalMapImg.src = MAP_IMAGES[keyData.map] || MAP_IMAGES["Blue Gate"];
 
       pinDot.style.left = keyData.mapX + '%';
       pinDot.style.top = keyData.mapY + '%';
