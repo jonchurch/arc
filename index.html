@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>ARC Raiders – Key Room Tier List</title>
+  <style>
+    :root {
+      --bg: #0b0d10;
+      --row: #12161c;
+      --row2: #0f1319;
+      --chip: #1b2230;
+      --chipBorder: rgba(255,255,255,0.08);
+      --text: #eaeaf0;
+      --muted: rgba(234,234,240,0.72);
+    }
+ 
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+      margin: 0;
+    }
+ 
+    h1 {
+      margin: 0 0 16px 0;
+      font-size: 36px;
+      letter-spacing: 0.2px;
+    }
+ 
+    .tier {
+      display: flex;
+      margin: 0 0 10px 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(180deg, var(--row) 0%, var(--row2) 100%);
+      min-height: 72px;
+    }
+ 
+    .label {
+      width: 86px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border-right: 1px solid rgba(0,0,0,0.35);
+    }
+ 
+    .items {
+      padding: 12px 14px;
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-content: center;
+    }
+ 
+    a.item {
+      display: inline-flex;
+      align-items: center;
+      background: var(--chip);
+      border: 1px solid var(--chipBorder);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      line-height: 1;
+      color: var(--text);
+      text-decoration: none;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.35);
+      transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+      max-width: 100%;
+    }
+ 
+    a.item:hover {
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,0.14);
+      background: #222b3a;
+    }
+ 
+    a.item:active {
+      transform: translateY(0);
+    }
+ 
+    a.item::after {
+      content: "↗";
+      font-size: 12px;
+      margin-left: 8px;
+      color: var(--muted);
+    }
+ 
+    .splus { background: #ffb703; color: #000; }
+    .s     { background: #f72585; color: #fff; }
+    .a     { background: #7209b7; color: #fff; }
+    .b     { background: #4361ee; color: #fff; }
+    .c     { background: #4cc9f0; color: #000; }
+    .d     { background: #adb5bd; color: #000; }
+    .f     { background: #495057; color: #fff; }
+ 
+    @media (max-width: 720px) {
+      h1 { font-size: 26px; }
+      .label { width: 70px; }
+      .tier { min-height: 64px; }
+      .items { padding: 10px 12px; gap: 8px; }
+      a.item { padding: 9px 10px; }
+    }
+ 
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin: 0 0 16px 0;
+      flex-wrap: wrap;
+    }
+ 
+    #filter {
+      width: min(400px, 100%);
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+ 
+    #filter::placeholder {
+      color: rgba(234,234,240,0.55);
+    }
+ 
+    #filter:focus {
+      border-color: rgba(255,255,255,0.18);
+      box-shadow: 0 0 0 3px rgba(76,201,240,0.18);
+    }
+ 
+    .count {
+      font-size: 13px;
+      color: var(--muted);
+    }
+ 
+    .map-filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+ 
+    .map-filters span {
+      font-size: 13px;
+      color: var(--muted);
+      margin-right: 4px;
+    }
+ 
+    .map-btn {
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 120ms ease;
+    }
+ 
+    .map-btn:hover {
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(255,255,255,0.18);
+    }
+ 
+    .map-btn.active {
+      background: #4361ee;
+      border-color: #4361ee;
+      color: #fff;
+    }
+ 
+    .map-btn.active:hover {
+      background: #5a75f0;
+      border-color: #5a75f0;
+    }
+ 
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+ 
+    .filters-row {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin: 0 0 16px 0;
+      flex-wrap: wrap;
+    }
+ 
+    @media (max-width: 720px) {
+      .filters-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+      .map-filters {
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+ 
+<h1>ARC Raiders – Key Room Tier List</h1>
+ 
+<div class="toolbar">
+  <input id="filter" type="search" placeholder="Filter keys… (e.g. Town Hall, Control Tower)" autocomplete="off" />
+  <div id="count" class="count" aria-live="polite"></div>
+</div>
+ 
+<div class="filters-row">
+  <div id="map-filters" class="map-filters">
+    <span>Map:</span>
+  </div>
+</div>
+ 
+<div id="tier-list"></div>
+ 
+<script>
+  // ===========================================
+  // KEY DATA - Edit this to add/modify keys
+  // ===========================================
+  const KEYS_DATA = [
+    // S+ Tier
+    { name: "Dam Staff Room Key", tier: "S+", map: "Dam", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=391s" },
+ 
+    // S Tier
+    { name: "Buried City Town Hall Key", tier: "S", map: "Buried City", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=303s" },
+ 
+    // A Tier
+    { name: "Buried City Residential Master Key", tier: "A", map: "Buried City", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=250s" },
+    { name: "Dam Control Tower Key", tier: "A", map: "Dam", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=348s" },
+    { name: "Dam Water Treatment Surveillance Key", tier: "A", map: "Dam", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=378s" },
+    { name: "Spaceport Trench Tower Key", tier: "A", map: "Spaceport", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=463s" },
+    { name: "Spaceport Warehouse Key", tier: "A", map: "Spaceport", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=510s" },
+ 
+    // B Tier
+    { name: "Blue Gate Cellar Key", tier: "B", map: "Blue Gate", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=20s" },
+    { name: "Stella Montis Archives Key", tier: "B", map: "Stella Montis", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=533s" },
+    { name: "Stella Montis Security Checkpoint Key", tier: "B", map: "Stella Montis", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=611s" },
+    { name: "Spaceport Control Tower Key", tier: "B", map: "Spaceport", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=636s" },
+ 
+    // C Tier
+    { name: "Blue Gate Communication Tower Key", tier: "C", map: "Blue Gate", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=93s" },
+    { name: "Blue Gate Village Key", tier: "C", map: "Blue Gate", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=150s" },
+    { name: "Blue Gate Confiscation Room Key", tier: "C", map: "Blue Gate", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=175s" },
+    { name: "Dam Testing Annex Key", tier: "C", map: "Dam", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=428s" },
+    { name: "Spaceport Container Storage Key", tier: "C", map: "Spaceport", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=448s" },
+    { name: "Stella Montis Medical Storage Key", tier: "C", map: "Stella Montis", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=595s" },
+    { name: "Buried City JKV Employee Key", tier: "C", map: "Buried City", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=659s" },
+ 
+    // D Tier
+    { name: "Buried City Hospital Key", tier: "D", map: "Buried City", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=217s" },
+    { name: "Stella Montis Assembly Admin Key", tier: "D", map: "Stella Montis", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=557s" },
+ 
+    // F Tier
+    { name: "Blue Gate Patrol Car Key", tier: "F", map: "Blue Gate", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=83s" },
+  ];
+ 
+  const TIERS = [
+    { id: "S+", label: "S+", cssClass: "splus" },
+    { id: "S", label: "S", cssClass: "s" },
+    { id: "A", label: "A", cssClass: "a" },
+    { id: "B", label: "B", cssClass: "b" },
+    { id: "C", label: "C", cssClass: "c" },
+    { id: "D", label: "D", cssClass: "d" },
+    { id: "F", label: "F", cssClass: "f" },
+  ];
+ 
+  // ===========================================
+  // APP
+  // ===========================================
+  (function () {
+    const input = document.getElementById('filter');
+    const count = document.getElementById('count');
+    const tierListEl = document.getElementById('tier-list');
+    const mapFiltersEl = document.getElementById('map-filters');
+ 
+    const maps = [...new Set(KEYS_DATA.map(k => k.map))].sort();
+    let activeMap = 'all';
+ 
+    function buildMapFilters() {
+      const allBtn = document.createElement('button');
+      allBtn.className = 'map-btn active';
+      allBtn.dataset.map = 'all';
+      allBtn.textContent = 'All';
+      mapFiltersEl.appendChild(allBtn);
+ 
+      for (const map of maps) {
+        const btn = document.createElement('button');
+        btn.className = 'map-btn';
+        btn.dataset.map = map;
+        btn.textContent = map;
+        mapFiltersEl.appendChild(btn);
+      }
+    }
+ 
+    function buildTierList() {
+      tierListEl.innerHTML = '';
+ 
+      for (const tier of TIERS) {
+        const keysInTier = KEYS_DATA.filter(k => k.tier === tier.id);
+        if (keysInTier.length === 0) continue;
+ 
+        const tierDiv = document.createElement('div');
+        tierDiv.className = 'tier';
+ 
+        const labelDiv = document.createElement('div');
+        labelDiv.className = `label ${tier.cssClass}`;
+        labelDiv.textContent = tier.label;
+ 
+        const itemsDiv = document.createElement('div');
+        itemsDiv.className = 'items';
+ 
+        for (const key of keysInTier) {
+          const a = document.createElement('a');
+          a.className = 'item';
+          a.href = key.video;
+          a.target = '_blank';
+          a.dataset.map = key.map;
+          a.textContent = key.name;
+          itemsDiv.appendChild(a);
+        }
+ 
+        tierDiv.appendChild(labelDiv);
+        tierDiv.appendChild(itemsDiv);
+        tierListEl.appendChild(tierDiv);
+      }
+    }
+ 
+    function update() {
+      const q = (input.value || '').trim().toLowerCase();
+      const items = Array.from(document.querySelectorAll('a.item'));
+      const tiers = Array.from(document.querySelectorAll('.tier'));
+      let shown = 0;
+ 
+      for (const a of items) {
+        const text = (a.textContent || '').toLowerCase();
+        const itemMap = a.dataset.map;
+ 
+        const matchesText = q === '' || text.includes(q);
+        const matchesMap = activeMap === 'all' || itemMap === activeMap;
+        const match = matchesText && matchesMap;
+ 
+        a.style.display = match ? '' : 'none';
+        if (match) shown++;
+      }
+ 
+      for (const tier of tiers) {
+        const visible = tier.querySelectorAll('a.item:not([style*="display: none"])').length;
+        tier.style.display = (visible === 0) ? 'none' : '';
+      }
+ 
+      const filtering = q !== '' || activeMap !== 'all';
+      count.textContent = filtering
+        ? `${shown} / ${items.length} match`
+        : `${items.length} keys`;
+    }
+ 
+    buildMapFilters();
+    buildTierList();
+ 
+    input.addEventListener('input', update);
+ 
+    mapFiltersEl.addEventListener('click', (e) => {
+      if (!e.target.classList.contains('map-btn')) return;
+ 
+      for (const btn of mapFiltersEl.querySelectorAll('.map-btn')) {
+        btn.classList.remove('active');
+      }
+      e.target.classList.add('active');
+      activeMap = e.target.dataset.map;
+      update();
+    });
+ 
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement !== input) {
+        e.preventDefault();
+        input.focus();
+      }
+      if (e.key === 'Escape' && document.activeElement === input) {
+        input.value = '';
+        update();
+        input.blur();
+      }
+    });
+ 
+    update();
+  })();
+</script>
+</div>
+</body>
+</html>
