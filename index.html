@@ -13,7 +13,7 @@
       --text: #eaeaf0;
       --muted: rgba(234,234,240,0.72);
     }
- 
+
     body {
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       background: var(--bg);
@@ -21,13 +21,13 @@
       padding: 24px;
       margin: 0;
     }
- 
+
     h1 {
       margin: 0 0 16px 0;
       font-size: 36px;
       letter-spacing: 0.2px;
     }
- 
+
     .tier {
       display: flex;
       margin: 0 0 10px 0;
@@ -37,7 +37,7 @@
       background: linear-gradient(180deg, var(--row) 0%, var(--row2) 100%);
       min-height: 72px;
     }
- 
+
     .label {
       width: 86px;
       font-weight: 800;
@@ -49,7 +49,7 @@
       text-transform: uppercase;
       border-right: 1px solid rgba(0,0,0,0.35);
     }
- 
+
     .items {
       padding: 12px 14px;
       flex: 1;
@@ -58,7 +58,7 @@
       gap: 10px;
       align-content: center;
     }
- 
+
     a.item {
       display: inline-flex;
       align-items: center;
@@ -73,25 +73,26 @@
       box-shadow: 0 1px 0 rgba(0,0,0,0.35);
       transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
       max-width: 100%;
+      cursor: pointer;
     }
- 
+
     a.item:hover {
       transform: translateY(-1px);
       border-color: rgba(255,255,255,0.14);
       background: #222b3a;
     }
- 
+
     a.item:active {
       transform: translateY(0);
     }
- 
+
     a.item::after {
-      content: "↗";
+      content: "\1F5FA";
       font-size: 12px;
       margin-left: 8px;
       color: var(--muted);
     }
- 
+
     .splus { background: #ffb703; color: #000; }
     .s     { background: #f72585; color: #fff; }
     .a     { background: #7209b7; color: #fff; }
@@ -99,7 +100,7 @@
     .c     { background: #4cc9f0; color: #000; }
     .d     { background: #adb5bd; color: #000; }
     .f     { background: #495057; color: #fff; }
- 
+
     @media (max-width: 720px) {
       h1 { font-size: 26px; }
       .label { width: 70px; }
@@ -107,7 +108,7 @@
       .items { padding: 10px 12px; gap: 8px; }
       a.item { padding: 9px 10px; }
     }
- 
+
     .toolbar {
       display: flex;
       gap: 12px;
@@ -115,7 +116,7 @@
       margin: 0 0 16px 0;
       flex-wrap: wrap;
     }
- 
+
     #filter {
       width: min(400px, 100%);
       padding: 12px 14px;
@@ -126,34 +127,34 @@
       outline: none;
       font-size: 14px;
     }
- 
+
     #filter::placeholder {
       color: rgba(234,234,240,0.55);
     }
- 
+
     #filter:focus {
       border-color: rgba(255,255,255,0.18);
       box-shadow: 0 0 0 3px rgba(76,201,240,0.18);
     }
- 
+
     .count {
       font-size: 13px;
       color: var(--muted);
     }
- 
+
     .map-filters {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
       align-items: center;
     }
- 
+
     .map-filters span {
       font-size: 13px;
       color: var(--muted);
       margin-right: 4px;
     }
- 
+
     .map-btn {
       padding: 8px 14px;
       border-radius: 8px;
@@ -164,28 +165,28 @@
       cursor: pointer;
       transition: all 120ms ease;
     }
- 
+
     .map-btn:hover {
       background: rgba(255,255,255,0.10);
       border-color: rgba(255,255,255,0.18);
     }
- 
+
     .map-btn.active {
       background: #4361ee;
       border-color: #4361ee;
       color: #fff;
     }
- 
+
     .map-btn.active:hover {
       background: #5a75f0;
       border-color: #5a75f0;
     }
- 
+
     .page {
       max-width: 1200px;
       margin: 0 auto;
     }
- 
+
     .filters-row {
       display: flex;
       gap: 16px;
@@ -193,7 +194,7 @@
       margin: 0 0 16px 0;
       flex-wrap: wrap;
     }
- 
+
     @media (max-width: 720px) {
       .filters-row {
         flex-direction: column;
@@ -204,67 +205,214 @@
         justify-content: flex-start;
       }
     }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.82);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 180ms ease;
+    }
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal {
+      background: #181d27;
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 14px;
+      max-width: 900px;
+      width: 94vw;
+      max-height: 90vh;
+      overflow: auto;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+      position: relative;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 22px 0;
+    }
+    .modal-header h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .modal-header .tier-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 800;
+      margin-left: 10px;
+      vertical-align: middle;
+      text-transform: uppercase;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 28px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0 4px;
+    }
+    .modal-close:hover { color: #fff; }
+    .modal-map {
+      position: relative;
+      margin: 16px 22px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #111;
+      line-height: 0;
+    }
+    .modal-map img {
+      width: 100%;
+      display: block;
+    }
+    .map-pin-dot {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #f72585;
+      border: 3px solid #fff;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 0 4px rgba(247,37,133,0.35), 0 2px 8px rgba(0,0,0,0.5);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .map-pin-pulse {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(247,37,133,0.25);
+      transform: translate(-50%, -50%);
+      animation: pulse-ring 2s ease-out infinite;
+      z-index: 1;
+      pointer-events: none;
+    }
+    @keyframes pulse-ring {
+      0% { transform: translate(-50%,-50%) scale(0.5); opacity: 1; }
+      100% { transform: translate(-50%,-50%) scale(2); opacity: 0; }
+    }
+    .modal-actions {
+      padding: 14px 22px 20px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .modal-actions a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 120ms ease;
+    }
+    .btn-video {
+      background: #dc2626;
+      color: #fff;
+    }
+    .btn-video:hover { background: #ef4444; }
+    .modal-map-label {
+      font-size: 12px;
+      color: var(--muted);
+      padding: 0 22px 4px;
+    }
   </style>
 </head>
 <body>
 <div class="page">
- 
+
 <h1>ARC Raiders – Key Room Tier List</h1>
- 
+
 <div class="toolbar">
   <input id="filter" type="search" placeholder="Filter keys… (e.g. Town Hall, Control Tower)" autocomplete="off" />
   <div id="count" class="count" aria-live="polite"></div>
 </div>
- 
+
 <div class="filters-row">
   <div id="map-filters" class="map-filters">
     <span>Map:</span>
   </div>
 </div>
- 
+
 <div id="tier-list"></div>
- 
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <h2><span id="modal-name"></span><span id="modal-badge" class="tier-badge"></span></h2>
+      <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-map-label" id="modal-map-label"></div>
+    <div class="modal-map" id="modal-map">
+      <img src="https://i.redd.it/55jwtfzo9m3g1.jpeg" alt="ARC Raiders Map" />
+      <div class="map-pin-pulse" id="pin-pulse"></div>
+      <div class="map-pin-dot" id="pin-dot"></div>
+    </div>
+    <div class="modal-actions">
+      <a id="modal-video" class="btn-video" href="#" target="_blank">&#9654; Watch Walkthrough</a>
+    </div>
+  </div>
+</div>
+
 <script>
   // ===========================================
   // KEY DATA - Edit this to add/modify keys
+  // mapX/mapY are percentage positions on the map image (0-100).
+  // Adjust these values to fine-tune pin placement.
   // ===========================================
   const KEYS_DATA = [
     // S+ Tier
-    { name: "Dam Staff Room Key", tier: "S+", map: "Dam", video: "https://www.youtube.com/watch?v=Zl-tlFGe0Ig" },
- 
+    { name: "Dam Staff Room Key", tier: "S+", map: "Dam", video: "https://www.youtube.com/watch?v=Zl-tlFGe0Ig", mapX: 72, mapY: 28 },
+
     // S Tier
-    { name: "Buried City Town Hall Key", tier: "S", map: "Buried City", video: "https://www.youtube.com/watch?v=7PYEOWd-CWg" },
- 
+    { name: "Buried City Town Hall Key", tier: "S", map: "Buried City", video: "https://www.youtube.com/watch?v=7PYEOWd-CWg", mapX: 35, mapY: 55 },
+
     // A Tier
-    { name: "Buried City Residential Master Key", tier: "A", map: "Buried City", video: "https://www.youtube.com/watch?v=UCMB4lHow3A" },
-    { name: "Dam Control Tower Key", tier: "A", map: "Dam", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=348s" },
-    { name: "Dam Water Treatment Surveillance Key", tier: "A", map: "Dam", video: "https://www.youtube.com/watch?v=4PKZtqDkcVI" },
-    { name: "Spaceport Trench Tower Key", tier: "A", map: "Spaceport", video: "https://www.youtube.com/watch?v=7wCxlXmiNkA" },
-    { name: "Spaceport Warehouse Key", tier: "A", map: "Spaceport", video: "https://www.youtube.com/watch?v=4b6g27x3AK4" },
- 
+    { name: "Buried City Residential Master Key", tier: "A", map: "Buried City", video: "https://www.youtube.com/watch?v=UCMB4lHow3A", mapX: 33, mapY: 52 },
+    { name: "Dam Control Tower Key", tier: "A", map: "Dam", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=348s", mapX: 74, mapY: 25 },
+    { name: "Dam Water Treatment Surveillance Key", tier: "A", map: "Dam", video: "https://www.youtube.com/watch?v=4PKZtqDkcVI", mapX: 70, mapY: 30 },
+    { name: "Spaceport Trench Tower Key", tier: "A", map: "Spaceport", video: "https://www.youtube.com/watch?v=7wCxlXmiNkA", mapX: 55, mapY: 18 },
+    { name: "Spaceport Warehouse Key", tier: "A", map: "Spaceport", video: "https://www.youtube.com/watch?v=4b6g27x3AK4", mapX: 58, mapY: 15 },
+
     // B Tier
-    { name: "Blue Gate Cellar Key", tier: "B", map: "Blue Gate", video: "https://www.youtube.com/watch?v=1mODwf3770E" },
-    { name: "Stella Montis Archives Key", tier: "B", map: "Stella Montis", video: "https://www.youtube.com/watch?v=yqE47MrtgIs" },
-    { name: "Stella Montis Security Checkpoint Key", tier: "B", map: "Stella Montis", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=611s" },
-    { name: "Spaceport Control Tower Key", tier: "B", map: "Spaceport", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=636s" },
- 
+    { name: "Blue Gate Cellar Key", tier: "B", map: "Blue Gate", video: "https://www.youtube.com/watch?v=1mODwf3770E", mapX: 20, mapY: 35 },
+    { name: "Stella Montis Archives Key", tier: "B", map: "Stella Montis", video: "https://www.youtube.com/watch?v=yqE47MrtgIs", mapX: 48, mapY: 72 },
+    { name: "Stella Montis Security Checkpoint Key", tier: "B", map: "Stella Montis", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=611s", mapX: 50, mapY: 75 },
+    { name: "Spaceport Control Tower Key", tier: "B", map: "Spaceport", video: "https://www.youtube.com/watch?v=-BSEiMKX6AA&t=636s", mapX: 53, mapY: 20 },
+
     // C Tier
-    { name: "Blue Gate Communication Tower Key", tier: "C", map: "Blue Gate", video: "https://www.youtube.com/watch?v=_Lhg_9S7-9c" },
-    { name: "Blue Gate Village Key", tier: "C", map: "Blue Gate", video: "https://www.youtube.com/watch?v=52sE7WHqq8E" },
-    { name: "Blue Gate Confiscation Room Key", tier: "C", map: "Blue Gate", video: "https://www.youtube.com/watch?v=4UOxuz8mElQ" },
-    { name: "Dam Testing Annex Key", tier: "C", map: "Dam", video: "https://www.youtube.com/watch?v=A-5FQknNE2g" },
-    { name: "Spaceport Container Storage Key", tier: "C", map: "Spaceport", video: "https://www.youtube.com/watch?v=NJ3wh8UnIW0" },
-    { name: "Stella Montis Medical Storage Key", tier: "C", map: "Stella Montis", video: "https://www.youtube.com/watch?v=aHUarKktrxU" },
-    { name: "Buried City JKV Employee Key", tier: "C", map: "Buried City", video: "https://www.youtube.com/watch?v=6Rbtm-wq_ZQ" },
- 
+    { name: "Blue Gate Communication Tower Key", tier: "C", map: "Blue Gate", video: "https://www.youtube.com/watch?v=_Lhg_9S7-9c", mapX: 22, mapY: 38 },
+    { name: "Blue Gate Village Key", tier: "C", map: "Blue Gate", video: "https://www.youtube.com/watch?v=52sE7WHqq8E", mapX: 18, mapY: 32 },
+    { name: "Blue Gate Confiscation Room Key", tier: "C", map: "Blue Gate", video: "https://www.youtube.com/watch?v=4UOxuz8mElQ", mapX: 24, mapY: 36 },
+    { name: "Dam Testing Annex Key", tier: "C", map: "Dam", video: "https://www.youtube.com/watch?v=A-5FQknNE2g", mapX: 68, mapY: 32 },
+    { name: "Spaceport Container Storage Key", tier: "C", map: "Spaceport", video: "https://www.youtube.com/watch?v=NJ3wh8UnIW0", mapX: 56, mapY: 22 },
+    { name: "Stella Montis Medical Storage Key", tier: "C", map: "Stella Montis", video: "https://www.youtube.com/watch?v=aHUarKktrxU", mapX: 46, mapY: 70 },
+    { name: "Buried City JKV Employee Key", tier: "C", map: "Buried City", video: "https://www.youtube.com/watch?v=6Rbtm-wq_ZQ", mapX: 37, mapY: 58 },
+
     // D Tier
-    { name: "Buried City Hospital Key", tier: "D", map: "Buried City", video: "https://www.youtube.com/watch?v=FzQz1NBZN0U" },
-    { name: "Stella Montis Assembly Admin Key", tier: "D", map: "Stella Montis", video: "https://www.youtube.com/watch?v=f8XjNTZjjbo" },
- 
+    { name: "Buried City Hospital Key", tier: "D", map: "Buried City", video: "https://www.youtube.com/watch?v=FzQz1NBZN0U", mapX: 31, mapY: 50 },
+    { name: "Stella Montis Assembly Admin Key", tier: "D", map: "Stella Montis", video: "https://www.youtube.com/watch?v=f8XjNTZjjbo", mapX: 52, mapY: 68 },
+
     // F Tier
-    { name: "Blue Gate Patrol Car Key", tier: "F", map: "Blue Gate", video: "https://www.youtube.com/watch?v=XMzIV7EFqGQ" },
+    { name: "Blue Gate Patrol Car Key", tier: "F", map: "Blue Gate", video: "https://www.youtube.com/watch?v=XMzIV7EFqGQ", mapX: 16, mapY: 40 },
   ];
- 
+
   const TIERS = [
     { id: "S+", label: "S+", cssClass: "splus" },
     { id: "S", label: "S", cssClass: "s" },
@@ -274,7 +422,9 @@
     { id: "D", label: "D", cssClass: "d" },
     { id: "F", label: "F", cssClass: "f" },
   ];
- 
+
+  const TIER_CSS = { "S+": "splus", S: "s", A: "a", B: "b", C: "c", D: "d", F: "f" };
+
   // ===========================================
   // APP
   // ===========================================
@@ -283,17 +433,52 @@
     const count = document.getElementById('count');
     const tierListEl = document.getElementById('tier-list');
     const mapFiltersEl = document.getElementById('map-filters');
- 
+
+    // Modal elements
+    const overlay = document.getElementById('modal-overlay');
+    const modalName = document.getElementById('modal-name');
+    const modalBadge = document.getElementById('modal-badge');
+    const modalMapLabel = document.getElementById('modal-map-label');
+    const modalVideo = document.getElementById('modal-video');
+    const pinDot = document.getElementById('pin-dot');
+    const pinPulse = document.getElementById('pin-pulse');
+
     const maps = [...new Set(KEYS_DATA.map(k => k.map))].sort();
     let activeMap = 'all';
- 
+
+    function openModal(keyData) {
+      modalName.textContent = keyData.name;
+      modalBadge.textContent = keyData.tier;
+      modalBadge.className = 'tier-badge ' + TIER_CSS[keyData.tier];
+      modalMapLabel.textContent = keyData.map + ' region';
+      modalVideo.href = keyData.video;
+
+      pinDot.style.left = keyData.mapX + '%';
+      pinDot.style.top = keyData.mapY + '%';
+      pinPulse.style.left = keyData.mapX + '%';
+      pinPulse.style.top = keyData.mapY + '%';
+
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeModal();
+    });
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+
     function buildMapFilters() {
       const allBtn = document.createElement('button');
       allBtn.className = 'map-btn active';
       allBtn.dataset.map = 'all';
       allBtn.textContent = 'All';
       mapFiltersEl.appendChild(allBtn);
- 
+
       for (const map of maps) {
         const btn = document.createElement('button');
         btn.className = 'map-btn';
@@ -302,77 +487,81 @@
         mapFiltersEl.appendChild(btn);
       }
     }
- 
+
     function buildTierList() {
       tierListEl.innerHTML = '';
- 
+
       for (const tier of TIERS) {
         const keysInTier = KEYS_DATA.filter(k => k.tier === tier.id);
         if (keysInTier.length === 0) continue;
- 
+
         const tierDiv = document.createElement('div');
         tierDiv.className = 'tier';
- 
+
         const labelDiv = document.createElement('div');
         labelDiv.className = `label ${tier.cssClass}`;
         labelDiv.textContent = tier.label;
- 
+
         const itemsDiv = document.createElement('div');
         itemsDiv.className = 'items';
- 
+
         for (const key of keysInTier) {
           const a = document.createElement('a');
           a.className = 'item';
-          a.href = key.video;
-          a.target = '_blank';
+          a.href = '#';
           a.dataset.map = key.map;
+          a.dataset.keyName = key.name;
           a.textContent = key.name;
+          a.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal(key);
+          });
           itemsDiv.appendChild(a);
         }
- 
+
         tierDiv.appendChild(labelDiv);
         tierDiv.appendChild(itemsDiv);
         tierListEl.appendChild(tierDiv);
       }
     }
- 
+
     function update() {
       const q = (input.value || '').trim().toLowerCase();
       const items = Array.from(document.querySelectorAll('a.item'));
       const tiers = Array.from(document.querySelectorAll('.tier'));
       let shown = 0;
- 
+
       for (const a of items) {
         const text = (a.textContent || '').toLowerCase();
         const itemMap = a.dataset.map;
- 
+
         const matchesText = q === '' || text.includes(q);
         const matchesMap = activeMap === 'all' || itemMap === activeMap;
         const match = matchesText && matchesMap;
- 
+
         a.style.display = match ? '' : 'none';
         if (match) shown++;
       }
- 
+
       for (const tier of tiers) {
         const visible = tier.querySelectorAll('a.item:not([style*="display: none"])').length;
         tier.style.display = (visible === 0) ? 'none' : '';
       }
- 
+
       const filtering = q !== '' || activeMap !== 'all';
       count.textContent = filtering
         ? `${shown} / ${items.length} match`
         : `${items.length} keys`;
     }
- 
+
     buildMapFilters();
     buildTierList();
- 
+
     input.addEventListener('input', update);
- 
+
     mapFiltersEl.addEventListener('click', (e) => {
       if (!e.target.classList.contains('map-btn')) return;
- 
+
       for (const btn of mapFiltersEl.querySelectorAll('.map-btn')) {
         btn.classList.remove('active');
       }
@@ -380,19 +569,25 @@
       activeMap = e.target.dataset.map;
       update();
     });
- 
+
     document.addEventListener('keydown', (e) => {
-      if (e.key === '/' && document.activeElement !== input) {
+      if (e.key === 'Escape') {
+        if (overlay.classList.contains('open')) {
+          closeModal();
+          return;
+        }
+        if (document.activeElement === input) {
+          input.value = '';
+          update();
+          input.blur();
+        }
+      }
+      if (e.key === '/' && document.activeElement !== input && !overlay.classList.contains('open')) {
         e.preventDefault();
         input.focus();
       }
-      if (e.key === 'Escape' && document.activeElement === input) {
-        input.value = '';
-        update();
-        input.blur();
-      }
     });
- 
+
     update();
   })();
 </script>
